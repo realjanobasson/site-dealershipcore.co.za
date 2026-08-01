@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 scripts/build.py",
+    "build": "python3 scripts/build.py && node --check src/index.js && node --check public/assets/app.js && node scripts/check-site.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "check": "npm run build && node --check src/index.js && node --check public/assets/app.js && node scripts/check-site.mjs",
+    "check": "npm run build",
     "d1:create": "wrangler d1 create dealershipcore-leads",
     "d1:migrate:local": "wrangler d1 migrations apply dealershipcore-leads --local",
     "d1:migrate:remote": "wrangler d1 migrations apply dealershipcore-leads --remote"
