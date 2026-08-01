@@ -1,4 +1,4 @@
-from hashlib import sha1
+from hashlib import sha1, sha256
 from pathlib import Path
 import py_compile
 import runpy
@@ -6,11 +6,11 @@ import runpy
 ROOT = Path(__file__).resolve().parents[1]
 
 GENERATOR_BLOBS = [
-    '3600e45cfebdc0eb446092eb8dbf503158fb5920',
+    '4ef68c73e7eccd3bb0a907b488c81a76b9c8efae',
     '141b6d271e38d3805df5ea55f9abfdec652cfaae',
-    'b9c582d9db549fbd47b22a7f707d5a0fb4dacf',
-    'acddfb97321fd5c77e2b9c163da42fff1c9a366',
-    'ebd13fc6475e3388b37b47942ca01b2f5f2b55b6',
+    'b9c582d9db549fbd47b22a7f707d5a0fb4dfdacf',
+    '3f193fe5a26c66b8176b801a85682db9ae66b528',
+    '4602d1d3de7910df8cbc67e9ebacb75595b2c594',
     '7cbc7940d88d44bea76b48fe5217631124fef2f7',
     'c7de1b9677d555e5df3d5768a21abacb7aab7304',
     '508c88ff2ab2e63cc9b94f2130cb8079c67fd737',
@@ -19,7 +19,7 @@ GENERATOR_BLOBS = [
     '02be2f42a8ba4cbf09aa2091db50da6cf7090f18',
     '7e69035c1caf8238d0e4499827768e09c3ee34f2',
     'ea0d45ba44e7051f696525f03b541e239300c15c',
-    '73c25745c9390b74f4b81c01a2a17a5a3e4b02b4',
+    '39ba24e2fb3a048af479af8d881bc415941d0443',
 ]
 
 STYLE_BLOBS = [
@@ -35,7 +35,14 @@ def git_blob_sha(content: bytes) -> str:
     return sha1(header + content).hexdigest()
 
 
-def assemble(parts_dir: Path, pattern: str, destination: Path, expected_blobs: list[str], minimum_size: int) -> None:
+def assemble(
+    parts_dir: Path,
+    pattern: str,
+    destination: Path,
+    expected_blobs: list[str],
+    expected_size: int,
+    expected_sha256: str,
+) -> None:
     parts = sorted(parts_dir.glob(pattern))
     if len(parts) != len(expected_blobs):
         raise SystemExit(
@@ -54,9 +61,16 @@ def assemble(parts_dir: Path, pattern: str, destination: Path, expected_blobs: l
         chunks.append(content)
 
     combined = b''.join(chunks)
-    if len(combined) < minimum_size:
+    if len(combined) != expected_size:
         raise SystemExit(
-            f'{destination.name}: assembled source is unexpectedly small ({len(combined)} bytes)'
+            f'{destination.name}: expected {expected_size} bytes, found {len(combined)}'
+        )
+
+    digest = sha256(combined).hexdigest()
+    if digest != expected_sha256:
+        raise SystemExit(
+            f'{destination.name}: checksum mismatch '
+            f'(expected {expected_sha256}, found {digest})'
         )
 
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -68,14 +82,16 @@ assemble(
     'part-*.py',
     ROOT / 'scripts' / 'generate_site.py',
     GENERATOR_BLOBS,
-    90_000,
+    93_402,
+    'a1986b854b0c07132da6953020ce9f964a13b2566fee0b40ba51cabb9c2080d3',
 )
 assemble(
     ROOT / 'scripts' / 'styles',
     'part-*.css',
     ROOT / 'public' / 'assets' / 'styles.css',
     STYLE_BLOBS,
-    25_000,
+    26_746,
+    'a74890cf359a8fb70f6e72007b0b7f3418d6dc7e733c44d6f13660e4baa48f18',
 )
 
 # Compile before execution so a damaged source boundary fails with a clear error.
