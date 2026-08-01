@@ -85,7 +85,7 @@ def shell(title, desc, path, body, active='', faq=None, article=False, extra_sch
   <meta property="og:description" content="{escape(desc)}">
   <meta property="og:url" content="{canonical}">
   <meta property="og:site_name" content="DealershipCore">
-  <meta property="og:image" content="https://dealershipcore.co.za/assets/og-dealershipcore.svg">
+  <meta property="og:image" content="https://dealershipcore.co.za/assets/og-dealershipcore.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" c
