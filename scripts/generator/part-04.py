@@ -1,5 +1,5 @@
 ontent="summary_large_image">
-  <meta name="twitter:image" content="https://dealershipcore.co.za/assets/og-dealershipcore.svg">
+  <meta name="twitter:image" content="https://dealershipcore.co.za/assets/og-dealershipcore.png">
   <meta name="theme-color" content="#05070b">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <script src="/assets/boot.js"></script>
