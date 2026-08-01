@@ -1,0 +1,33 @@
+harset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found | DealershipCore</title><link rel="stylesheet" href="/assets/styles.css"></head><body><main class="hero"><div class="narrow text-center"><div class="eyebrow">404</div><h1>This page is not in the pipeline.</h1><p class="lead">The link may have moved or the page may not exist.</p><a class="btn btn-primary" href="/">Return to DealershipCore</a></div></main></body></html>''', encoding='utf-8')
+
+# favicon
+(ROOT/'favicon.svg').write_text('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2878ff"/><stop offset="1" stop-color="#67e8f9"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="#0d131e"/><path d="M17 18h25v7H17zm0 11h18v7H17zm0 11h25v7H17z" fill="#fff"/><rect x="43" y="18" width="6" height="29" rx="3" fill="url(#g)"/></svg>''', encoding='utf-8')
+
+# robots, llms, sitemap
+paths=[p for p,_ in write_pages]
+(ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://dealershipcore.co.za/sitemap.xml\n',encoding='utf-8')
+(ROOT/'llms.txt').write_text('''# DealershipCore
+
+DealershipCore is a South African dealership growth and operating platform.
+
+## Primary topics
+- Dealership lead management
+- Dealership stock visibility
+- Dealership websites and form integration
+- Vehicle valuation and sell-my-car tools
+- Sales pipeline and automation
+- Owner and multi-branch reporting
+
+## Important product status
+DealershipCore is opening a founding dealer programme. Public pages distinguish launch focus, integrations, illustrative product views and roadmap items.
+
+## Key pages
+- https://dealershipcore.co.za/platform/
+- https://dealershipcore.co.za/ecosystem/
+- https://dealershipcore.co.za/compare/vmg-alternative/
+- https://dealershipcore.co.za/resources/
+- https://dealershipcore.co.za/book-demo/
+''',encoding='utf-8')
+urls=''.join(f'<url><loc>{BASE}{p}</loc><lastmod>2026-08-01</lastmod><changefreq>{"weekly" if p in ["/","/resources/"] else "monthly"}</changefreq><priority>{"1.0" if p=="/" else "0.8"}</priority></url>' for p in paths)
+(ROOT/'sitemap.xml').write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',encoding='utf-8')
+print(f'Generated {len(write_pages)} pages')
