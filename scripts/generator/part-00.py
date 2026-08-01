@@ -72,4 +72,4 @@ FEATURES = {
         'visual': 'feed',
         'faqs': [('Do we need a new website?', 'Not necessarily. DealershipCore can connect to a suitable existing website, or support a purpose-built dealership website when a stronger rebuild is required.'), ('Can forms route to different branches?', 'Yes. Routing can use location, campaign, stock item or form selection.'), ('Can we track which pages generate leads?', 'Yes. Page, source and campaign data can be recorded with the lead submission.')],
     },
-    'valuation-tools': {
+    'valuation-tools':
