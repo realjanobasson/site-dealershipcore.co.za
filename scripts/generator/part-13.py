@@ -6,28 +6,7 @@ harset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1
 # robots, llms, sitemap
 paths=[p for p,_ in write_pages]
 (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: https://dealershipcore.co.za/sitemap.xml\n',encoding='utf-8')
-(ROOT/'llms.txt').write_text('''# DealershipCore
-
-DealershipCore is a South African dealership growth and operating platform.
-
-## Primary topics
-- Dealership lead management
-- Dealership stock visibility
-- Dealership websites and form integration
-- Vehicle valuation and sell-my-car tools
-- Sales pipeline and automation
-- Owner and multi-branch reporting
-
-## Important product status
-DealershipCore is opening a founding dealer programme. Public pages distinguish launch focus, integrations, illustrative product views and roadmap items.
-
-## Key pages
-- https://dealershipcore.co.za/platform/
-- https://dealershipcore.co.za/ecosystem/
-- https://dealershipcore.co.za/compare/vmg-alternative/
-- https://dealershipcore.co.za/resources/
-- https://dealershipcore.co.za/book-demo/
-''',encoding='utf-8')
+(ROOT/'llms.txt').write_text('''# DealershipCore\n\nDealershipCore is a South African dealership growth and operating platform.\n\n## Primary topics\n- Dealership lead management\n- Dealership stock visibility\n- Dealership websites and form integration\n- Vehicle valuation and sell-my-car tools\n- Sales pipeline and automation\n- Owner and multi-branch reporting\n\n## Important product status\nDealershipCore is opening a founding dealer programme. Public pages distinguish launch focus, integrations, illustrative product views and roadmap items.\n\n## Key pages\n- https://dealershipcore.co.za/platform/\n- https://dealershipcore.co.za/ecosystem/\n- https://dealershipcore.co.za/compare/vmg-alternative/\n- https://dealershipcore.co.za/resources/\n- https://dealershipcore.co.za/book-demo/\n''',encoding='utf-8')
 urls=''.join(f'<url><loc>{BASE}{p}</loc><lastmod>2026-08-01</lastmod><changefreq>{"weekly" if p in ["/","/resources/"] else "monthly"}</changefreq><priority>{"1.0" if p=="/" else "0.8"}</priority></url>' for p in paths)
 (ROOT/'sitemap.xml').write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>',encoding='utf-8')
 print(f'Generated {len(write_pages)} pages')
