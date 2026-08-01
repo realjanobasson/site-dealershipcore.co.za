@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dealershipcore-co-za",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-26",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true },
+  // Create a D1 database, then uncomment this block and replace the database_id.
+  // "d1_databases": [
+  //   {
+  //     "binding": "DB",
+  //     "database_name": "dealershipcore-leads",
+  //     "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+  //     "migrations_dir": "migrations"
+  //   }
+  // ],
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+}
