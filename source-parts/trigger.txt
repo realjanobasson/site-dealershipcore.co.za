@@ -1,0 +1,1 @@
+Publish the validated DealershipCore production build.
