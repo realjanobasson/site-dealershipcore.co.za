@@ -1,10 +1,10 @@
 {
   "name": "dealershipcore-co-za",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-v4.mjs && node --check src/index.js && node --check src/dealershipcore-brand-home.js && node --check src/dealershipcore-final.js && node --check public/assets/dealershipcore-v4.js && node scripts/check-v4.mjs",
+    "build": "node scripts/build-v4.mjs && node --check src/index.js && node --check src/dealershipcore-brand-home.js && node --check src/dealershipcore-final.js && node --check src/dealershipcore-tools-seo.js && node --check public/assets/dealershipcore-v4.js && node scripts/check-v4.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
     "check": "npm run build",
