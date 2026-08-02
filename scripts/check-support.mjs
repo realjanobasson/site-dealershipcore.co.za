@@ -14,7 +14,7 @@ for (const slug of requiredRoutes) {
 }
 
 for (const requirement of [
-  "path === '/support'",
+  "path==='/support'",
   'articleByPath.get(path)',
   'TechArticle',
   'BreadcrumbList',
