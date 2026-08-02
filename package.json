@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "python3 scripts/build.py && node --check src/index.js && node --check public/assets/app.js && node scripts/check-site.mjs",
+    "build": "node scripts/build-site.mjs && node --check scripts/generate-site.mjs && node --check src/index.js && node --check public/assets/app.js && node scripts/check-site.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
     "check": "npm run build",
