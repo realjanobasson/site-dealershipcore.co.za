@@ -10,10 +10,22 @@ const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(d
 const clean = (value, max = 500) => String(value ?? '').trim().slice(0, max);
 const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+function serialiseApplication(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return '';
+  try { return clean(JSON.stringify(value), 12000); }
+  catch { return ''; }
+}
+
 async function saveLead(payload, request, env) {
   const id = crypto.randomUUID();
   const createdAt = new Date().toISOString();
   const cf = request.cf || {};
+  const applicationJson = serialiseApplication(payload.application);
+  const challengeParts = [
+    clean(payload.challenge, 6000),
+    applicationJson ? `Dealership account application details:\n${applicationJson}` : '',
+  ].filter(Boolean);
+
   const row = {
     id,
     created_at: createdAt,
@@ -24,9 +36,9 @@ async function saveLead(payload, request, env) {
     role: clean(payload.role, 100),
     branches: clean(payload.branches, 40),
     stock_size: clean(payload.stock_size, 60),
-    current_system: clean(payload.current_system, 150),
-    challenge: clean(payload.challenge, 1500),
-    interest: clean(payload.interest, 300),
+    current_system: clean(payload.current_system, 500),
+    challenge: clean(challengeParts.join('\n\n'), 12000),
+    interest: clean(payload.interest, 2000),
     source: clean(payload.source || 'website', 100),
     page: clean(payload.page, 300),
     referrer: clean(payload.referrer, 500),
@@ -35,6 +47,7 @@ async function saveLead(payload, request, env) {
     country: clean(cf.country, 10),
     city: clean(cf.city, 120),
     status: 'new',
+    application_json: applicationJson,
   };
 
   let persisted = false;
@@ -86,6 +99,9 @@ export default {
     }
 
     if (url.pathname === '/api/leads' && request.method === 'POST') {
+      const contentLength = Number(request.headers.get('content-length') || 0);
+      if (contentLength > 100_000) return json({ error: 'The submitted form is too large.' }, 413);
+
       const contentType = request.headers.get('content-type') || '';
       if (!contentType.includes('application/json')) return json({ error: 'Send JSON data.' }, 415);
 
@@ -103,7 +119,12 @@ export default {
 
       try {
         const lead = await saveLead(payload, request, env);
-        return json({ ok: true, id: lead.id, message: 'Thanks — your request has been received. We will contact you to arrange the next step.' }, 201);
+        return json({
+          ok: true,
+          id: lead.id,
+          thank_you_url: '/thank-you/dealership-account/',
+          message: 'Thanks — your request has been received. We will contact you to arrange the next step.',
+        }, 201);
       } catch (error) {
         console.error('Lead submission failed', error);
         return json({ error: 'We could not save your request. Please try again.' }, 500);
