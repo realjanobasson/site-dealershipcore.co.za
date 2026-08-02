@@ -12,9 +12,9 @@ const expectedSlugs = [
   'dealership-software',
 ];
 
-// The tool links and routes are generated dynamically from TOOLS, so validate the
-// source-of-truth slug definitions plus the route/link generators instead of
-// looking for six hard-coded URL strings that do not exist in the source file.
+// Tool routes and links are generated from the TOOLS array. Validate the six
+// source-of-truth slugs and the shared generators rather than searching for six
+// hard-coded URLs that are intentionally not duplicated in the source.
 const declaredSlugs = [...source.matchAll(/\bslug:\s*'([^']+)'/g)].map((match) => match[1]);
 const uniqueDeclaredSlugs = [...new Set(declaredSlugs)];
 
@@ -30,14 +30,14 @@ if (uniqueDeclaredSlugs.length !== expectedSlugs.length) {
   );
 }
 
-const routeAndLinkRequirements = [
+const sourceRouteRequirements = [
   "new Map(TOOLS.map(tool => [`/tools/${tool.slug}`",
   'href="/tools/${tool.slug}/"',
   "path === '/tools'",
-  "path.startsWith('/tools/')",
+  'toolByPath.get(path)',
 ];
 
-for (const requirement of routeAndLinkRequirements) {
+for (const requirement of sourceRouteRequirements) {
   if (!source.includes(requirement)) {
     throw new Error(`Missing dynamic tool route/link generator: ${requirement}`);
   }
@@ -59,11 +59,14 @@ for (const required of [
   }
 }
 
-if (!finalSource.includes('x-dealershipcore-final-polish')) {
-  throw new Error('Missing final integration wrapper.');
-}
-if (!finalSource.includes('data-dcx-tool-page')) {
-  throw new Error('Missing tool-page styling state.');
+for (const required of [
+  'x-dealershipcore-final-polish',
+  'data-dcx-tool-page',
+  "path.startsWith('/tools/')",
+]) {
+  if (!finalSource.includes(required)) {
+    throw new Error(`Missing final tool-page integration requirement: ${required}`);
+  }
 }
 
 console.log(
