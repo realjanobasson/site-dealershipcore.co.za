@@ -1,6 +1,6 @@
-import site from './dealershipcore-tools-final.js';
+import site from './dealershipcore-enterprise-images.js';
 
-const RELEASE = 'dealershipcore-hero-trust-fix-2026-08-02-v1';
+const RELEASE = 'dealershipcore-hero-trust-fix-2026-08-02-v2';
 
 const MAIN_DEALERSHIP_IMAGE = 'https://images.unsplash.com/photo-1680701572790-b7b46d35b1bd?auto=format&fit=crop&w=1500&q=86';
 const PRODUCT_WORKFLOW_IMAGE = 'https://images.unsplash.com/photo-1648737966968-5f50e6bf9e46?auto=format&fit=crop&w=900&q=84';
@@ -19,15 +19,15 @@ const HERO_TRUST_STYLE = `<style id="dc-hero-trust-fix-style">
   align-items:center;
   min-width:245px;
   padding:14px 16px;
-  border:1px solid rgba(83,214,143,.38);
+  border:1px solid rgba(83,214,143,.42);
   border-radius:13px;
-  background:linear-gradient(135deg,rgba(19,92,61,.88),rgba(15,66,48,.78));
-  box-shadow:0 15px 36px rgba(0,0,0,.2);
+  background:linear-gradient(135deg,rgba(20,105,68,.94),rgba(13,70,49,.88));
+  box-shadow:0 15px 36px rgba(0,0,0,.22);
   backdrop-filter:blur(12px);
 }
 .hero-proof-stars{
   grid-row:1 / span 2;
-  color:#8cf0b7;
+  color:#9af3bd;
   font-size:12px;
   font-weight:950;
   letter-spacing:1.5px;
@@ -42,12 +42,12 @@ const HERO_TRUST_STYLE = `<style id="dc-hero-trust-fix-style">
 .hero-proof-card small{
   display:block;
   margin-top:2px;
-  color:#ccebd9;
+  color:#d2f0df;
   font-size:10px;
   line-height:1.4;
 }
 .dcx-photo-main img{
-  object-position:center center!important;
+  object-position:center 48%!important;
 }
 .dcx-photo-small img{
   object-position:center center!important;
@@ -64,19 +64,19 @@ function fixHomepage(html) {
   let output = html;
 
   output = output.replace(
-    /https:\/\/images\.unsplash\.com\/photo-1560253414-f65d1f5a1a37\?[^"']+/g,
-    MAIN_DEALERSHIP_IMAGE,
+    /(<div class="dcx-photo-main"><img src=")[^"]+("[^>]*>)/i,
+    `$1${MAIN_DEALERSHIP_IMAGE}$2`,
   );
   output = output.replace(
-    /https:\/\/images\.unsplash\.com\/photo-1556761175-b413da4baf72\?[^"']+/g,
-    PRODUCT_WORKFLOW_IMAGE,
+    /(<div class="dcx-photo-small"><img src=")[^"]+("[^>]*>)/i,
+    `$1${PRODUCT_WORKFLOW_IMAGE}$2`,
   );
   output = output.replace(
-    'alt="Dealership professional inspecting a vehicle"',
+    /alt="[^"]*"(?=[^>]*width="920" height="690" loading="lazy" decoding="async"><div class="dcx-photo-label">)/i,
     'alt="Customers and dealership staff viewing vehicles in a modern showroom"',
   );
   output = output.replace(
-    'alt="Dealership team reviewing business performance"',
+    /alt="[^"]*"(?=[^>]*width="520" height="390" loading="lazy" decoding="async"><\/div><\/div><div class="dcx-editorial-copy">)/i,
     'alt="Automotive professional using a connected product interface inside a vehicle"',
   );
   output = output.replace(
