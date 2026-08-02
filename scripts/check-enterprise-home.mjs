@@ -10,16 +10,27 @@ for (const required of [
   'replaceToolIcons',
   'dcx-tools-section',
   'No invented product data',
+  'Five-star experience standard',
 ]) {
-  if (!source.includes(required)) throw new Error(`Missing enterprise homepage requirement: ${required}`);
+  if (!source.includes(required)) {
+    throw new Error(`Missing enterprise homepage requirement: ${required}`);
+  }
 }
 
-if ((source.match(/class=\\"dce-star\\"/g) || []).length !== 5) {
-  throw new Error('Enterprise trust strip must contain exactly five green star blocks.');
+// The source template may contain either plain or escaped quote characters,
+// depending on how GitHub serialises the JavaScript template literal. Count the
+// semantic star elements without depending on one quote representation.
+const enterpriseSection = source.match(/const ENTERPRISE_SECTION = `[\s\S]*?`;\n\nconst STYLE/)?.[0] || '';
+const starBlocks = enterpriseSection.match(/class=\\?["']dce-star\\?["']/g) || [];
+
+if (starBlocks.length !== 5) {
+  throw new Error(
+    `Enterprise five-star experience panel must contain exactly five star elements; found ${starBlocks.length}.`,
+  );
 }
 
 if ((source.match(/dcx-tool-icon/g) || []).length < 2) {
   throw new Error('Tool dropdown icon replacement is missing.');
 }
 
-console.log('Validated enterprise trust section, five green stars and category icons.');
+console.log('Validated enterprise trust section, five-star experience panel and category icons.');
