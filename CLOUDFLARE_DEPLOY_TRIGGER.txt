@@ -1,0 +1,3 @@
+Force production deployment of DealershipCore enterprise trust section, green five-star experience standard, category icons and dealership-specific imagery.
+Triggered: 2026-08-02T14:13:00+02:00
+Source entry: src/dealershipcore-enterprise-images.js
