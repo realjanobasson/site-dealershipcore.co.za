@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "dealershipcore-co-za",
-  "main": "src/dealershipcore-polished-home.js",
+  "main": "src/dealershipcore-interactive-dashboard.js",
   "compatibility_date": "2026-07-26",
   "assets": {
     "directory": "./public",
