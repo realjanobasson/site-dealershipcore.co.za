@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "dealershipcore-co-za",
-  "main": "src/dealershipcore-hero-restored.js",
+  "main": "src/dealershipcore-hero-redesign-v2.js",
   "compatibility_date": "2026-07-26",
   "assets": {
     "directory": "./public",
